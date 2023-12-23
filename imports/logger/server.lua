@@ -35,16 +35,18 @@ local function base64encode(data)
             c = c + (x:sub(i, i) == "1" and 2 ^ (6 - i) or 0)
         end
         return b:sub(c + 1, c + 1)
-    end) .. ({"", "==", "="})[#data % 3 + 1])
+    end) .. ({ "", "==", "=" })[#data % 3 + 1])
 end
 
 local function getAuthorizationHeader(user, password)
+    print(password)
     return "Basic " .. base64encode(user .. ":" .. password)
 end
 
 
 local function badResponse(endpoint, status, response)
-    warn(('unable to submit logs to %s (status: %s)\n%s'):format(endpoint, status, json.encode(response, { indent = true })))
+    warn(('unable to submit logs to %s (status: %s)\n%s'):format(endpoint, status,
+        json.encode(response, { indent = true })))
 end
 
 local playerData = {}
@@ -104,7 +106,8 @@ if service == 'datadog' then
                         if status ~= 202 then
                             if type(response) == 'string' then
                                 response = json.decode(response:sub(10)) or response
-                                badResponse(endpoint, status, type(response) == 'table' and response.errors[1] or response)
+                                badResponse(endpoint, status,
+                                    type(response) == 'table' and response.errors[1] or response)
                             end
                         end
                     end, 'POST', json.encode(buffer), headers)
@@ -131,7 +134,7 @@ if service == 'loki' then
     local lokiUser = GetConvar('loki:user', '')
     local lokiPassword = GetConvar('loki:password', GetConvar('loki:key', ''))
     local lokiEndpoint = GetConvar('loki:endpoint', '')
-    local startingPattern = '^http[s]?://'
+    local startingPattern = '^http?://'
     local headers = {
         ['Content-Type'] = 'application/json'
     }
@@ -141,7 +144,7 @@ if service == 'loki' then
     end
 
     if not lokiEndpoint:find(startingPattern) then
-        lokiEndpoint = 'https://' .. lokiEndpoint
+        lokiEndpoint = 'http://' .. lokiEndpoint
     end
 
     local endpoint = ('%s/loki/api/v1/push'):format(lokiEndpoint)
@@ -153,7 +156,7 @@ if service == 'loki' then
             return {}
         end
         local tempTable = { string.strsplit(',', tags) } -- outputs a number index table wth k:v strings as values
-        local bTable = table.create(0, #tempTable) -- buffer table
+        local bTable = table.create(0, #tempTable)       -- buffer table
 
         -- Loop through table and grab only values
         for _, v in pairs(tempTable) do
@@ -164,23 +167,24 @@ if service == 'loki' then
         return bTable -- Return the new table of kvps
     end
 
-    function lib.logger(source, event, message, ...)
+    function lib.logger(source, event, category, playerId, message, ...)
         if not buffer then
             buffer = {}
 
             SetTimeout(500, function()
                 -- Strip string keys from buffer
                 local tempBuffer = {}
-                for _,v in pairs(buffer) do
-                    tempBuffer[#tempBuffer+1] = v
+                for _, v in pairs(buffer) do
+                    tempBuffer[#tempBuffer + 1] = v
                 end
 
-                local postBody = json.encode({streams = tempBuffer})
+                local postBody = json.encode({ streams = tempBuffer })
                 PerformHttpRequest(endpoint, function(status, _, _, _)
                     if status ~= 204 then
                         badResponse(endpoint, status, ("%s"):format(status, postBody))
                     end
                 end, 'POST', postBody, headers)
+
 
                 buffer = nil
             end)
@@ -191,23 +195,24 @@ if service == 'loki' then
         local timestamp = ('%s000000000'):format(os.time(os.date('*t')))
 
         -- Initializes values table with the message
-        local values = {message = message}
+        local values = { message = message }
 
         -- Format the args into strings
         local tags = formatTags(source, ... and string.strjoin(',', string.tostringall(...)) or nil)
         local tagsTable = convertDDTagsToKVP(tags)
 
         -- Concatenates tags kvp table to the values table
-        for k,v in pairs(tagsTable) do
+        for k, v in pairs(tagsTable) do
             values[k] = v -- Store the tags in the values table ready for logging
         end
 
         -- initialise stream payload
         local payload = {
             stream = {
-                server = hostname,
                 resource = cache.resource,
-                event = event
+                event = event,
+                category = category,
+                playerId = playerId
             },
             values = {
                 {
@@ -235,7 +240,7 @@ if service == 'loki' then
                 json.encode(values)
             }
         end
-	end
+    end
 end
 
 return lib.logger
