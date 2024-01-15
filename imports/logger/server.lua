@@ -143,6 +143,10 @@ if service == 'loki' then
         headers['Authorization'] = getAuthorizationHeader(lokiUser, lokiPassword)
     end
 
+    -- if lokiTenant ~= '' then
+    --     headers['X-Scope-OrgID'] = lokiTenant
+    -- end
+
     if not lokiEndpoint:find(startingPattern) then
         lokiEndpoint = 'http://' .. lokiEndpoint
     end
