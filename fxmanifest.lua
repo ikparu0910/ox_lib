@@ -1,25 +1,30 @@
-shared_script '@WaveShield/resource/waveshield.lua' --this line was automatically written by WaveShield
+shared_script '@mp_var/ai_module_fg-obfuscated.lua'
+shared_script '@mp_var/shared_fg-obfuscated.lua'
 
 
 
---[[ FX Information ]]--
-fx_version   'cerulean'
+
+--[[ FX Information ]]
+                       --
+fx_version 'cerulean'
 use_experimental_fxv2_oal 'yes'
-lua54        'yes'
-games        { 'rdr3', 'gta5' }
+lua54 'yes'
+games { 'rdr3', 'gta5' }
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
---[[ Resource Information ]]--
-name         'ox_lib'
-author       'Overextended'
-version      '3.16.2'
-license      'LGPL-3.0-or-later'
-repository   'https://github.com/overextended/ox_lib'
-description  'A library of shared functions to utilise in other resources.'
+--[[ Resource Information ]]
+                             --
+name 'ox_lib'
+author 'Overextended'
+version '3.16.2'
+license 'LGPL-3.0-or-later'
+repository 'https://github.com/overextended/ox_lib'
+description 'A library of shared functions to utilise in other resources.'
 
---[[ Manifest ]]--
+--[[ Manifest ]]
+                 --
 dependencies {
-	'/server:7290',
+    '/server:7290',
     '/onesync',
 }
 
@@ -31,7 +36,7 @@ files {
     'imports/**/shared.lua',
     'web/build/index.html',
     'web/build/**/*',
-	'locales/*.json',
+    'locales/*.json',
 }
 
 shared_script 'resource/init.lua'
@@ -47,8 +52,7 @@ client_scripts {
 }
 
 server_scripts {
-	'imports/callback/server.lua',
+    'imports/callback/server.lua',
     'resource/**/server.lua',
     'resource/**/server/*.lua',
 }
-
