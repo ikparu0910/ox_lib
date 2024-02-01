@@ -1,9 +1,9 @@
 {
   "language": "English",
   "ui": {
-    "cancel": "Cancel",
-    "close": "Close",
-    "confirm": "Confirm",
+    "cancel": "Huỷ",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
     "more": "More..."
   },
   "txadmin_announcement": "Server announcement by %s",
