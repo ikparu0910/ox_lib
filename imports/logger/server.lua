@@ -39,14 +39,13 @@ local function base64encode(data)
 end
 
 local function getAuthorizationHeader(user, password)
-    print(password)
     return "Basic " .. base64encode(user .. ":" .. password)
 end
 
 
 local function badResponse(endpoint, status, response)
-    warn(('unable to submit logs to %s (status: %s)\n%s'):format(endpoint, status,
-        json.encode(response, { indent = true })))
+    -- warn(('unable to submit logs to %s (status: %s)\n%s'):format(endpoint, status,
+    --     json.encode(response, { indent = true })))
 end
 
 local playerData = {}
