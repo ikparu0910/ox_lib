@@ -9,9 +9,8 @@ const useStyles = createStyles((theme) => ({
   container: {
     width: 350,
     height: 20,
-    borderRadius: theme.radius.sm,
     backgroundColor: theme.colors.dark[5],
-    overflow: 'hidden',
+    borderRadius: '1vw',
   },
   wrapper: {
     width: '100%',
@@ -24,8 +23,10 @@ const useStyles = createStyles((theme) => ({
   },
   bar: {
     height: '100%',
-    background: 'url(./assets/bgProgress.svg)',
-    backgroundRepeat: "no-repeat",
+    backgroundColor: '#ffd60a',
+    boxShadow: '0px 0px 5px #ffd60a',
+    backgroundRepeat: 'no-repeat',
+    borderRadius: '1vw',
   },
   labelWrapper: {
     position: 'absolute',
@@ -46,7 +47,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 'bold',
     color: theme.colors.gray[3],
     textShadow: theme.shadows.sm,
-    marginTop: -80
+    marginTop: -80,
   },
 }));
 
