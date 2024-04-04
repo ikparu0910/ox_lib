@@ -11,7 +11,7 @@ function lib.waitFor(cb, errMessage, timeout)
     if value ~= nil then return value end
 
     if timeout or timeout == nil then
-        if type(timeout) ~= 'number' then timeout = 1000 end
+        if type(timeout) ~= 'number' then timeout = 2000 end
     end
 
     local start = timeout and GetGameTimer()
