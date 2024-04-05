@@ -49,7 +49,7 @@ local isFivem = cache.game == 'fivem'
 
 local controls = {
     INPUT_LOOK_LR = isFivem and 1 or 0xA987235F,
-    INPUT_LOOK_UD = isFivem and 2 or 0xD2047988,
+    INPUT_LOOK_UD = isFivem and 2 or 0xD2047988,s
     INPUT_SPRINT = isFivem and 21 or 0x8FFC75D6,
     INPUT_AIM = isFivem and 25 or 0xF84FA74F,
     INPUT_MOVE_LR = isFivem and 30 or 0x4D8FB4C1,
