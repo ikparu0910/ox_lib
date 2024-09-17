@@ -21,7 +21,7 @@ end
 
 local settings = {
     default_locale = GetConvar('ox:locale', 'en'),
-    notification_position = safeGetKvp(GetResourceKvpString, 'notification_position', 'top-right'),
+    notification_position = safeGetKvp(GetResourceKvpString, 'notification_position', 'bottom'),
     notification_audio = safeGetKvp(GetResourceKvpInt, 'notification_audio') == 1
 }
 

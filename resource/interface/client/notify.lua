@@ -26,21 +26,27 @@ function lib.notify(data)
     local sound = settings.notification_audio and data.sound
     data.sound = nil
     data.position = data.position or settings.notification_position
-
+    data.style = {
+        backgroundColor = '#07103062',
+        color = '#FFF',
+    }
     SendNUIMessage({
         action = 'notify',
         data = data
     })
 
-    if not sound then return end
+    -- if not sound then return end
 
-    if sound.bank then lib.requestAudioBank(sound.bank) end
+
+    -- if sound.bank then lib.requestAudioBank(sound.bank) end
 
     local soundId = GetSoundId()
-    PlaySoundFrontend(soundId, sound.name, sound.set, true)
+    PlaySoundFrontend(-1, 'CHALLENGE_UNLOCKED', 'HUD_AWARDS', false)
+
+
     ReleaseSoundId(soundId)
 
-    if sound.bank then ReleaseNamedScriptAudioBank(sound.bank) end
+    -- if sound.bank then ReleaseNamedScriptAudioBank(sound.bank) end
 end
 
 ---@class DefaultNotifyProps
