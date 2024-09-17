@@ -29,6 +29,9 @@ function lib.notify(data)
     data.style = {
         backgroundColor = '#07103062',
         color = '#FFF',
+        ['.description'] = {
+            color = '#FFF'
+        }
     }
     SendNUIMessage({
         action = 'notify',
